@@ -1,2 +1,2 @@
-pub mod my_motor;
-pub use my_motor::*;
+pub mod drivetrain;
+pub use drivetrain::*;

@@ -6,8 +6,10 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-frcrs = { git = "https://github.com/Team-2502/frcrs", branch = "jni" }
+frcrs = { git = "https://github.com/Team-2502/frcrs.git" }
 tokio = { version = "1.38.0", features = ["full", "rt"] }
+nalgebra = "0.32.3"
+uom = { version = "0.35.0", features = ["f64"] }
 
 [deploy]
 team_number = 2502
