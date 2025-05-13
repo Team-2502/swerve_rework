@@ -4,6 +4,7 @@ use tokio::time::sleep;
 use tokio::{runtime::Runtime, task::LocalSet};
 use frcrs::{init_hal, hal_report, observe_user_program_starting, refresh_data};
 use frcrs::input::RobotState;
+use frcrs::telemetry::Telemetry;
 use robotcode::{teleop, Ferris, Joysticks};
 
 fn main() {
@@ -19,7 +20,7 @@ fn main() {
         observe_user_program_starting();
         let mut ferris = Ferris::new();
         let mut joysticks = Joysticks::new();
-
+        Telemetry::init(5807);
         let mut last_loop = Instant::now();
 
             loop {

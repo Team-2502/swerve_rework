@@ -18,6 +18,9 @@ pub mod drivetrain {
     pub const DEADZONE: f64 = 0.04;
     pub const SLOW_MODE_SPEED: f64 = 0.3;
     pub const SLOW_MODE_ROTATION_SPEED: f64 = 0.2;
+
+    pub const WHEELBASE_WIDTH_INCHES: f64 = 750.;
+    pub const WHEELBASE_LENGTH_INCHES: f64 = 750.;
     
     
 }

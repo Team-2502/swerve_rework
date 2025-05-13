@@ -1,16 +1,35 @@
+use std::ops::Index;
 use frcrs::{alliance_station, deadzone};
 use crate::constants::robotmap;
-use frcrs::ctre::{ControlMode, Talon,};
+use frcrs::ctre::{CanCoder, ControlMode, Talon};
 use nalgebra::{Rotation2, Vector2};
 use uom::si::angle::{degree, radian, revolution};
-use uom::si::f64::Angle;
+use uom::si::f64::{Angle, Length};
 use crate::{constants, Ferris, Joysticks};
 use crate::constants::joystick_map::SLOW_MODE;
 use frcrs::redux::CanAndGyro;
+use frcrs::telemetry::Telemetry;
+use uom::si::length::inch;
+use crate::constants::drivetrain::{WHEELBASE_LENGTH_INCHES, WHEELBASE_WIDTH_INCHES};
+use crate::swerve::Kinematics;
 
 pub struct Drivetrain {
     gyro: CanAndGyro,
     pub offset: Angle,
+    kinematics: Kinematics,
+
+    fl_drive: Talon,
+    fl_turn: Talon,
+    fl_encoder: CanCoder,
+    bl_drive: Talon,
+    bl_turn: Talon,
+    bl_encoder: CanCoder,
+    br_drive: Talon,
+    br_turn: Talon,
+    br_encoder: CanCoder,
+    fr_drive: Talon,
+    fr_turn: Talon,
+    fr_encoder: CanCoder,
 }
 
 impl Default for Drivetrain {
@@ -24,6 +43,7 @@ impl Drivetrain {
         Self {
             gyro: CanAndGyro::new(constants::robotmap::drivetrain::GYRO_ID),
             offset: Angle::new::<degree>(0.),
+            kinematics: Kinematics::new_rectangle(Length::new::<inch>(WHEELBASE_LENGTH_INCHES), Length::new::<inch>(WHEELBASE_WIDTH_INCHES)),
         }
     }
     pub fn control_drivetrain(&mut self, joysticks: &mut Joysticks) {
@@ -66,10 +86,12 @@ impl Drivetrain {
     pub fn set_speeds(&mut self, x: f64, y: f64, rotation: f64) {
         let mut transform = Vector2::new(x, y);
         transform = Rotation2::new(-self.get_heading_wrapped().get::<radian>()) * transform;
-        print!("heading: {} ", self.get_heading_wrapped().get::<degree>());
-        print!("x: {} ", transform.x);
-        println!("y: {}", transform.y);
-        
+        let mut speeds = self.kinematics.calculate(transform.x, transform.y, rotation);
+        // print!("fl angle: {} ", speeds[0].1.get::<degree>());
+        // print!("bl angle: {} ", speeds[1].1.get::<degree>());
+        // print!("br angle: {} ", speeds[2].1.get::<degree>());
+        // println!("fr speed: {} ", speeds[3].1.get::<degree>());
+
     }
     
     pub fn get_heading_wrapped(&mut self) -> Angle {
@@ -95,5 +117,9 @@ impl Drivetrain {
     
     pub fn set_heading(&mut self, heading: Angle) {
         self.offset = self.get_raw_heading() - heading;
+    }
+
+    pub fn get_module_angles() -> Vec<Angle> {
+
     }
 }

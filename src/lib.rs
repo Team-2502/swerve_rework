@@ -1,9 +1,11 @@
 pub mod constants;
 pub mod subsystems;
+pub mod swerve;
 
 use crate::constants::joystick_map::{LEFT_JOYSTICK_ID, RIGHT_JOYSTICK_ID};
 use crate::subsystems::Drivetrain;
 use frcrs::input::Joystick;
+use frcrs::telemetry::Telemetry;
 
 pub struct Ferris {
     drivetrain: Drivetrain,
