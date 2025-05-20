@@ -13,9 +13,6 @@ pub mod robotmap {
         pub const FR_DRIVE_ID: i32 = 1;
         pub const FR_TURN_ID: i32 = 2;
         pub const FR_ENCODER_ID: i32 = 13;
-        
-
-
     }
 }
 
@@ -25,7 +22,6 @@ pub mod joystick_map {
     //left drive
     pub const SLOW_MODE: usize = 1;
     pub const ZERO_HEADING: usize = 2;
-    
 }
 
 pub mod drivetrain {
@@ -35,7 +31,5 @@ pub mod drivetrain {
 
     pub const WHEELBASE_WIDTH_INCHES: f64 = 750.;
     pub const WHEELBASE_LENGTH_INCHES: f64 = 750.;
-    pub const SWERVE_TURN_RATIO: f64 = 12.8; 
-    
-    
+    pub const SWERVE_TURN_RATIO: f64 = 12.8;
 }

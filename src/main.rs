@@ -1,11 +1,11 @@
 use std::time::{Duration, Instant};
 use tokio::time::sleep;
 
-use tokio::{runtime::Runtime, task::LocalSet};
-use frcrs::{init_hal, hal_report, observe_user_program_starting, refresh_data};
 use frcrs::input::RobotState;
 use frcrs::telemetry::Telemetry;
+use frcrs::{hal_report, init_hal, observe_user_program_starting, refresh_data};
 use robotcode::{teleop, Ferris, Joysticks};
+use tokio::{runtime::Runtime, task::LocalSet};
 
 fn main() {
     let executor = Runtime::new().unwrap();
@@ -23,20 +23,18 @@ fn main() {
         Telemetry::init(5807);
         let mut last_loop = Instant::now();
 
-            loop {
-                refresh_data();
-                let elapsed = last_loop.elapsed().as_secs_f64();
-                let left = (1. / 500. - elapsed).max(0.);
-                sleep(Duration::from_secs_f64(left)).await;
-                //println!("{}", 1. / last_loop.elapsed().as_secs_f64());
-                last_loop = Instant::now();
-                let state = RobotState::get();
-                if state.enabled() && state.teleop() {
-                    teleop(&mut ferris, &mut joysticks);
-                }
-                
-                
+        loop {
+            refresh_data();
+            let elapsed = last_loop.elapsed().as_secs_f64();
+            let left = (1. / 500. - elapsed).max(0.);
+            sleep(Duration::from_secs_f64(left)).await;
+            //println!("{}", 1. / last_loop.elapsed().as_secs_f64());
+            last_loop = Instant::now();
+            let state = RobotState::get();
+            if state.enabled() && state.teleop() {
+                teleop(&mut ferris, &mut joysticks);
             }
+        }
     });
 
     executor.block_on(controller);
